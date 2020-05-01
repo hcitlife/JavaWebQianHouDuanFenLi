@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
+    <title>部门列表</title>
+    <link rel="stylesheet" href="css/pintuer.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/pintuer.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        $.ajax({
+          url:"http://localhost:8080/qhdfl/deptController?op=list",
+          dataType:"json",
+          success:function (res) {
+            if(res.code == 200){
+              for(var i =0;i<res.data.length;i++){
+                var $tr = $("<tr></tr>");
+                $("#deptList").append($tr);
+
+                var $tdDeptno = $("<td>"+res.data[i].deptno+"</td>");
+                var $tdDname = $("<td>"+res.data[i].dname+"</td>");
+                var $tdLoc = $("<td>"+res.data[i].loc+"</td>");
+                var $tdOp = $('<td>' +
+                        '<div class="button-group">' +
+                        '<a class="button border-main" href="javascript:void(0)" onclick="return update('+res.data[i].deptno+')">' +
+                        '<span class="icon-edit"></span> 修改' +
+                        '</a>' +
+                        '<a class="button border-red" href="javascript:void(0)" onclick="return del('+res.data[i].deptno+')">' +
+                        '<span class="icon-trash-o"></span> 删除' +
+                        '</a>' +
+                        '</div> ' +
+                        '</td>');
+                $tr.append($tdDeptno);
+                $tr.append($tdDname);
+                $tr.append($tdLoc);
+                $tr.append($tdOp);
+              }
+            }
+          }
+        });
+      });
+      function update(no) {
+        window.location.href="http://localhost:8080/qhdfl/update.html?deptno="+no;
+      }
+      function del(deptno){
+        if(confirm("您确定要删除吗?")){
+          $.ajax({
+            url:"http://localhost:8080/qhdfl/deptController?op=delete",
+            data:{deptno:deptno},
+            success:function (res) {
+              if(res.code == 200){
+                window.location.reload();
+              }
+            }
+          })
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <form method="post" class="form-x" action="deptController?op=query">
+      <div class="form-group">
+        <div class="field">
+          <input type="text" class="input" name="params" placeholder="根据部门名称查询"/>
+          <div class="tips"></div>
+        </div>
+        <button class="button bg-main icon-check-square-o" type="submit"> 查询</button>
+      </div>
+    </form>
+
+    <div class="panel admin-panel">
+      <table class="table table-hover text-center" id="deptList">
+        <tr>
+          <th width="10%">编号</th>
+          <th width="15%">名称</th>
+          <th width="20%">地址</th>
+          <th width="15%">操作</th>
+        </tr>
+      </table>
+    </div>
+
+    <a class="button bg-main icon-check-square-o" href="add.html"> 增加部门</a>
+  </body>
+</html>

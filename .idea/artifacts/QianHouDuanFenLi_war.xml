@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="QianHouDuanFenLi:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>QianHouDuanFenLi</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="QianHouDuanFenLi.war">
+      <element id="artifact" artifact-name="QianHouDuanFenLi:war exploded" />
+    </root>
+  </artifact>
+</component>
